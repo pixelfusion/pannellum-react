@@ -103,7 +103,7 @@ class PannellumVideo extends Component {
     muted: true,
 
     // Video JS options
-    videoJsConfig: propTypes.object,
+    videoJsConfig: {},
 
     // Extra options
     roll: 0,
