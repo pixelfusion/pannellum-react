@@ -15,11 +15,6 @@ import videojs from 'video.js'
         var vid = container.getElementsByTagName('video')[0],
             pnlmContainer = document.createElement('div');
         config = config || {};
-        config.type = 'equirectangular';
-        config.dynamic = true;
-        config.showZoomCtrl = false;
-        config.showFullscreenCtrl = false;
-        config.autoLoad = true;
         config.panorama = vid;
         pnlmContainer.style.visibility = 'hidden';
         player.pnlmViewer = pannellum.viewer(pnlmContainer, config);
@@ -52,4 +47,3 @@ import videojs from 'video.js'
     });
     
     })(document, videojs, pannellum);
-    

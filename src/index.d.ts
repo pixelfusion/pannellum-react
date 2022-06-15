@@ -1,3 +1,4 @@
+import { VideoJsPlayerOptions } from "video.js";
 
 export interface PannellumPropType {
   width?:	string;
@@ -46,6 +47,17 @@ export interface PannellumPropType {
 
 export function Pannellum(props: PannellumPropType): JSX.Element;
 
+export enum PanellumType {
+  'cubemap',
+  'multires',
+  'equirectangular',
+}
+
+export enum CrossOriginType {
+  'anonymous',
+  'use-credentials',
+}
+
 export interface PannellumVideoPropType {
   video?:	string;
   loop?:	boolean;
@@ -69,7 +81,36 @@ export interface PannellumVideoPropType {
   mouseZoom?:	boolean;
   hotspotDebug?:	boolean;
 
-  children?: React.ReactNode
+  children?: React.ReactNode;
+
+  // Video JS options
+  videoJsConfig?: VideoJsPlayerOptions;
+
+  // Extra pannellum options
+  roll?: number;
+  haov?: number;
+  vaov?: number;
+  vOffset?: number;
+  autoRotateInactivityDelay?: number;
+  autoRotateStopDelay?: any;
+  type?: PanellumType;
+  northOffset?: number;
+  showFullscreenCtrl?: boolean;
+  dynamic?: boolean;
+  doubleClickZoom?: boolean;
+  keyboardZoom?: boolean;
+  showZoomCtrl?: boolean;
+  autoLoad?: boolean;
+  showControls?: boolean;
+  orientationOnByDefault?: boolean;
+  hotSpotDebug?: boolean;
+  backgroundColor: propTypes.any;
+  avoidShowingBackground?: boolean;
+  animationTimingFunction?: (i: number) => number;
+  draggable?: boolean;
+  disableKeyboardCtrl?: boolean;
+  crossOrigin: CrossOriginType;
+  touchPanSpeedCoeffFactor?: number;
 }
 
 export function PannellumVideo(props: PannellumVideoPropType): JSX.Element;

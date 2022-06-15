@@ -49,6 +49,35 @@ class PannellumVideo extends Component {
     handleClick:propTypes.func,
     handleClickArg: propTypes.object,
     cssClass: propTypes.string,
+
+    // Video JS options
+    videoJsConfig: propTypes.object,
+
+    // Extra pannellum options
+    roll: propTypes.number,
+    haov: propTypes.number,
+    vaov: propTypes.number,
+    vOffset: propTypes.number,
+    autoRotateInactivityDelay: propTypes.number,
+    autoRotateStopDelay: propTypes.any,
+    type: propTypes.oneOf([ 'cubemap', 'multires', 'equirectangular' ]),
+    northOffset: propTypes.number,
+    showFullscreenCtrl: propTypes.bool,
+    dynamic: propTypes.bool,
+    doubleClickZoom: propTypes.bool,
+    keyboardZoom: propTypes.bool,
+    showZoomCtrl: propTypes.bool,
+    autoLoad: propTypes.bool,
+    showControls: propTypes.bool,
+    orientationOnByDefault: propTypes.bool,
+    hotSpotDebug: propTypes.bool,
+    backgroundColor: propTypes.any,
+    avoidShowingBackground: propTypes.bool,
+    animationTimingFunction: propTypes.func,
+    draggable: propTypes.bool,
+    disableKeyboardCtrl: propTypes.bool,
+    crossOrigin: propTypes.oneOf([ 'anonymous', 'use-credentials' ]),
+    touchPanSpeedCoeffFactor: propTypes.number,
   }
 
   static defaultProps = {
@@ -71,12 +100,40 @@ class PannellumVideo extends Component {
     loop:false,
     autoplay:true,
     controls:false,
-    muted: true
+    muted: true,
+
+    // Video JS options
+    videoJsConfig: propTypes.object,
+
+    // Extra options
+    roll: 0,
+    haov: 360,
+    vaov: 180,
+    vOffset: 0,
+    autoRotateInactivityDelay: -1,
+    autoRotateStopDelay: undefined,
+    type: 'equirectangular',
+    northOffset: 0,
+    showFullscreenCtrl: false,
+    dynamic: true,
+    doubleClickZoom: true,
+    keyboardZoom: true,
+    showZoomCtrl: false,
+    autoLoad: true,
+    showControls: true,
+    orientationOnByDefault: false,
+    hotSpotDebug: false,
+    backgroundColor: [0, 0, 0],
+    avoidShowingBackground: false,
+    draggable: true,
+    disableKeyboardCtrl: false,
+    crossOrigin: 'anonymous',
+    touchPanSpeedCoeffFactor: 1,
   }
 
   renderVideo = (state) =>{
     const { children } = this.props;
-    // make the array of sub components, even if its one, it become array of one 
+    // make the array of sub components, even if its one, it become array of one
     let hotspots = [...children];
     let hotspotArray = [];
     if (Array.isArray(hotspots)){
@@ -106,27 +163,27 @@ class PannellumVideo extends Component {
           default:
             return [];
         }
-        
+
       });
     }
 
     if (state === "update"){
-      
+
       this.video = videojs(this.videoNode);
       let cuurentHS = [...this.video.pnlmViewer.getConfig().hotSpots];
       this.video.pnlmViewer.setYaw(this.props.yaw);
       this.video.pnlmViewer.setPitch(this.props.pitch);
       this.video.pnlmViewer.setHfov(this.props.hfov);
       this.video.pnlmViewer.setHfovBounds([this.props.minHfov,this.props.maxHfov]);
-      
+
       //remove all hotspots
       cuurentHS.map( hs => this.video.pnlmViewer.removeHotSpot(hs.id));
       // Adding new hotspots
       hotspotArray.map( hs => this.video.pnlmViewer.addHotSpot(hs));
       // setting new video
-      this.video.src({ 
-        type: 'video/mp4', 
-        src: this.props.video 
+      this.video.src({
+        type: 'video/mp4',
+        src: this.props.video
       });
       return this.video.play();
     } else {
@@ -137,21 +194,11 @@ class PannellumVideo extends Component {
         muted: this.props.muted,
         plugins: {
           pannellum: {
-            yaw : this.props.yaw,
-            pitch: this.props.pitch,
-            hfov: this.props.hfov,
-            minHfov: this.props.minHfov,
-            maxHfov: this.props.maxHfov,
-            minPitch: this.props.minPitch,
-            maxPitch: this.props.maxPitch,
-            minYaw: this.props.minYaw,
-            maxYaw: this.props.maxYaw,
-            hotSpotDebug: this.props.hotspotDebug,
-            autoRotate:this.props.autoRotate,
-            mouseZoom:this.props.mouseZoom,
+            ...this.props,
             hotSpots: hotspotArray
           }
-        } 
+        },
+        ...(this.props.videoJsConfig || {}),
       });
       this.video.src({ type: 'video/mp4', src: this.props.video });
       this.video.play();
@@ -159,7 +206,7 @@ class PannellumVideo extends Component {
   }
 
   componentDidMount = () => {
-    this.renderVideo("mount");    
+    this.renderVideo("mount");
   }
 
   componentDidUpdate (prevProps){
@@ -193,7 +240,7 @@ class PannellumVideo extends Component {
   componentWillUnmount() {
     videojs(this.videoNode).dispose();
   }
-  
+
   getViewer = () => {
     return this.video.pnlmViewer;
   }
@@ -209,9 +256,9 @@ class PannellumVideo extends Component {
       <div data-vjs-player>
         <video
           id={this.props.id ? this.props.id : this.state.id}
-          className="video-js vjs-default-skin vjs-big-play-centered" 
+          className="video-js vjs-default-skin vjs-big-play-centered"
           ref={node => this.videoNode = node}
-          preload="none" 
+          preload="none"
           crossOrigin="anonymous"
           style={divStyle}
         />
