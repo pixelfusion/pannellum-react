@@ -40,7 +40,10 @@
   "author": "farminf<farmin.f@gmail.com>",
   "homepage": "https://github.com/farminf/pannellum-react",
   "license": "MIT",
-  "repository": "https://github.com/farminf/pannellum-react",
+  "repository": {
+    "type": "git+https",
+    "url":"https://github.com/farminf/pannellum-react"
+  },
   "keywords": [
     "react-component",
     "Pannellum",
