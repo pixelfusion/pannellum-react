@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git+https",
-    "url":"https://github.com/farminf/pannellum-react"
+    "url": "https://github.com/farminf/pannellum-react"
   },
   "keywords": [
     "react-component",
@@ -51,5 +51,8 @@
     "component",
     "360",
     "vr"
-  ]
+  ],
+  "resolutions": {
+    "@babel/traverse": "7.23.2"
+  }
 }
